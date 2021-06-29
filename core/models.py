@@ -3,10 +3,15 @@ from django.db import models
 # Create your models here.
 class Patient(models.Model):
     ohip_id = models.CharField(max_length=15, primary_key=True)
-    name = models.CharField(max_length=30)
+    firstName = models.CharField(max_length=30)
+    lastName = models.CharField(max_length=30)
     dob = models.DateField()
     address = models.CharField(max_length=100)
     gender = models.CharField(max_length=6)
+    email = models.EmailField(default=None)
+    isEmailVerified = models.BooleanField(default=False)
+    phoneNumber = models.CharField(max_length=15, default='')
+    image = models.CharField(max_length=100, default='')
     clinic_id = models.ForeignKey(
         'Clinic',
         on_delete=models.CASCADE,
@@ -18,7 +23,8 @@ class Patient(models.Model):
 
 class Doctor(models.Model):
     cpso_id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=100)
+    firstName = models.CharField(max_length=30)
+    lastName = models.CharField(max_length=30)
     specialty = models.CharField(max_length=50)
     gender = models.CharField(max_length=6)
     clinic_id = models.ForeignKey(
@@ -71,3 +77,66 @@ class Appointment(models.Model):
 
     class Meta:
         ordering = ['id']
+
+class Language(models.Model):
+    class Languages(models.TextChoices):
+        ENGLISH =  "ENGLISH"
+        SPANISH =  "SPANISH"
+        FRENCH =  "FRENCH"
+        CHINESE =  "CHINESE"
+        NEPALI =  "NEPALI"
+        GUJURATI = "GUJURATI"
+        HINDI =  "HINDI"
+        RUSSIAN = "RUSSIAN"
+        PORTUGESE =  "PORTUGESE"
+        INODNESIAN =  "INODNESIAN"
+        ITALIAN =  "ITALIAN"
+        JAPANESE =  "JAPANESE"
+        MARATHI =  "MARATHI"
+        BENGALI =  "BENGALI"
+        TAMIL = "TAMIL"
+        URDU =  "URDU"
+        SEWDISH =  "SEWDISH"
+        KOREAN =  "KOREAN"
+        IRISH = "IRISH"
+        FINNISH =  "FINNISH"
+        DUTCH = "DUTCH"
+        ROMANIAN = "ROMANIAN"
+        SLOVAK =  "SLOVAK"
+        UKRAINIAN =  "UKRAINIAN"
+        TURKISH =  "TURKISH"
+        # langs = [
+        #     "ENGLISH",
+        #     "SPANISH",
+        #     "FRENCH",
+        #     "CHINESE",
+        #     "NEPALI",
+        #     "GUJURATI",
+        #     "HINDI",
+        #     "RUSSIAN",
+        #     "PORTUGESE",
+        #     "INODNESIAN",
+        #     "ITALIAN",
+        #     "JAPANESE",
+        #     "MARATHI",
+        #     "BENGALI",
+        #     "TAMIL",
+        #     "URDU",
+        #     "SEWDISH",
+        #     "KOREAN",
+        #     "IRISH",
+        #     "FINNISH",
+        #     "DUTCH",
+        #     "ROMANIAN",
+        #     "SLOVAK",
+        #     "UKRAINIAN",
+        #     "TURKISH"]
+
+    language_name = models.CharField( max_length=10, choices=Languages.choices, default=Languages.ENGLISH)
+    
+    def __str__(self):
+        return self.language_name
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Language'
