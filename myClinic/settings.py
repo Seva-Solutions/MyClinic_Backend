@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myClinic_api.apps.MyclinicApiConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
