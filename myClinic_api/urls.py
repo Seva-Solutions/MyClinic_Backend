@@ -5,15 +5,19 @@ from . import views
 from myClinic_api.views import (
      total_numberofpatients,
      total_numberofclinics,
-     total_numberofdoctors
+     total_numberofdoctors,
+     add_patient
 )
    
 app_name = 'myClinic_api'
 
 urlpatterns = [
 
-    #endpoints to get total number of items
+    # Endpoints to get total number of items
     path('get_totalpatients/', total_numberofpatients),
     path('get_totalclinics/', total_numberofclinics),
     path('get_totaldoctors/', total_numberofdoctors),
-]
+
+    # Endpoint to add patients
+    path('add_patient/add', add_patient),
+]   
