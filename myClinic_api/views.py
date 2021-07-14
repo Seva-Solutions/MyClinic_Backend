@@ -76,3 +76,16 @@ def add_clinic(request):
             serializer.save()
             return Response("Clinic Sucessfully Added", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST',])
+def add_appointment(request):
+    add_appointment = None
+    if request.method != 'POST':
+        return HttpResponse('Only the POST verb can be used on this endpoint.', status=405)
+    elif request.method == 'POST':
+        serializer = AppointmentSerializer(add_appointment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Appointment Sucessfully Added", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

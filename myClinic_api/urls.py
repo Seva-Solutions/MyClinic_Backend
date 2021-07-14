@@ -7,7 +7,8 @@ from myClinic_api.views import (
      total_numberofclinics,
      total_numberofdoctors,
      add_patient,
-     add_clinic
+     add_clinic,
+     add_appointment
 )
    
 app_name = 'myClinic_api'
@@ -22,7 +23,10 @@ urlpatterns = [
     # Endpoint to add patients
     path('add_patient/add', add_patient),
 
-      # Endpoint to add clinic
+    # Endpoint to add clinic
     path('add_clinic/add', add_clinic),
-    
+
+    # Endpoint to add appointment
+    path('add_appointment/add', add_appointment),
+
 ]   
