@@ -89,3 +89,13 @@ def add_appointment(request):
             serializer.save()
             return Response("Appointment Sucessfully Added", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET',])
+def clinic_view(request,id):
+
+    clinic_view = None
+    clinic_view= Clinic.objects.filter(id=id)
+
+    if request.method == "GET":
+        serializer = ClinicSerializer(clinic_view,many=True)
+        return Response(serializer.data)
