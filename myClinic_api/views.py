@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.http.request import HttpRequest
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from .serializers import *
 from .models import *
@@ -98,4 +99,18 @@ def clinic_view(request,id):
 
     if request.method == "GET":
         serializer = ClinicSerializer(clinic_view,many=True)
+        return Response(serializer.data)
+
+@api_view(['GET',])
+@permission_classes((AllowAny,))
+@csrf_exempt
+def patient_view(request, id):
+    patient_view = None
+    try:
+        patient_view = Patient.objects.get(id=id)
+    except Patient.DoesNotExist:
+        return Response(f'Patient does not exist', status=404)
+    patient_view = Patient.objects.filter(id=id)
+    if request.method == "GET":
+        serializer = PatientSerializer(patient_view,many=True)
         return Response(serializer.data)
