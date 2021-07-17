@@ -19,3 +19,15 @@ def appointments(request):
             serializer.save()
             return Response("Appointment Sucessfully Added", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET',])
+def get_appointment(request):
+    if request.method == "GET":
+        appointment_view = None
+        try:
+            appointment_view = Appointment.objects.get(id=id)
+        except Appointment.DoesNotExist:
+            return Response(f'Appointment does not exist', status=404)
+        serializer = AppointmentSerializer(appointment_view,many=True)
+
+
