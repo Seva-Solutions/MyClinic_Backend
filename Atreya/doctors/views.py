@@ -26,7 +26,6 @@ def total_doctors(request):
 @permission_classes((AllowAny,))
 @csrf_exempt
 def doctors(request):
-
     if request.method == "GET":
         doctor_view = None
         try:
