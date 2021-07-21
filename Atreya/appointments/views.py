@@ -8,8 +8,8 @@ from .serializers import *
 from .models import *
 
 # Create your views here.
-@api_view(['POST',])
-def appointments(request):
+@api_view(['GET', 'POST',])
+def appointments(request, id):
     add_appointment = None
     if request.method != 'POST':
         return HttpResponse('Only the POST verb can be used on this endpoint.', status=405)
@@ -19,15 +19,13 @@ def appointments(request):
             serializer.save()
             return Response("Appointment Sucessfully Added", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET',])
-def get_appointment(request):
-    if request.method == "GET":
+    elif request.method == "GET":
         appointment_view = None
         try:
             appointment_view = Appointment.objects.get(id=id)
         except Appointment.DoesNotExist:
             return Response(f'Appointment does not exist', status=404)
         serializer = AppointmentSerializer(appointment_view,many=True)
+
 
 
