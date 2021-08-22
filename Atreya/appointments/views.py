@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from django.http import HttpResponse, JsonResponse, response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -8,24 +9,52 @@ from .serializers import *
 from .models import *
 
 # Create your views here.
-@api_view(['GET', 'POST',])
-def appointments(request, id):
+@api_view(['GET', 'POST', 'PATCH'])
+def appointments(request, appointment_id=''):
     add_appointment = None
-    if request.method != 'POST':
-        return HttpResponse('Only the POST verb can be used on this endpoint.', status=405)
-    elif request.method == 'POST':
+    appointment_id = request.GET.get('appointment', appointment_id)
+    if request.method == 'POST':
         serializer = AppointmentSerializer(add_appointment, data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response("Appointment Sucessfully Added", status=status.HTTP_201_CREATED)
+            appointment = serializer.save()
+            response = {'id' : appointment.id}
+            return Response(response, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == "GET":
-        appointment_view = None
+    elif request.method == 'PATCH':
+        appointment_id = request.GET.get('appointment', request.data['id'])
         try:
-            appointment_view = Appointment.objects.get(id=id)
+            add_appointment = Appointment.objects.get(id=appointment_id)
         except Appointment.DoesNotExist:
             return Response(f'Appointment does not exist', status=404)
-        serializer = AppointmentSerializer(appointment_view,many=True)
+        serializer = AppointmentSerializer(add_appointment, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Appointment Sucessfully Updated", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET":
+        appointment_data = None
+        clinic_id = request.GET.get('clinic', '')
+        doctor_id = request.GET.get('doctor', '')
+        if not clinic_id and not appointment_id and not doctor_id:
+            return Response(f'Appointment id, clinic id or doctor id must be specified', status=404)
+        elif (clinic_id or doctor_id) and appointment_id:
+            return Response(f'Please specify either appointment id or one of; clinic id, doctor id. Not both', status=404)
+
+        if clinic_id and doctor_id:
+            appointment_data = Appointment.objects.filter(appointment_type__clinic__id=clinic_id, appointment_type__doctor__id=doctor_id)
+        elif clinic_id:
+            appointment_data = Appointment.objects.filter(appointment_type__clinic__id=clinic_id)
+        elif doctor_id:
+            appointment_data = Appointment.objects.filter(appointment_type__doctor__id=doctor_id)
+        else:
+            try:
+                appointment_data = [ Appointment.objects.get(id=appointment_id) ]
+            except Appointment.DoesNotExist:
+                return Response(f'Appointment does not exist', status=404)
+        serializer = AppointmentSerializer(appointment_data,many=True)
+        return Response(serializer.data)
+
+
 
 
 

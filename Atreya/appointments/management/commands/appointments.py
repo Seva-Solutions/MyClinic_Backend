@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 from .data.appointment_types import appointment_types
 from .data.appointments import appointments
 from .data.pre_appointment_questions import pre_appointment_questions
-from .data.pre_appointment_responses import pre_appointment_responses
+# from .data.pre_appointment_responses import pre_appointment_responses
 
 class Command(BaseCommand):
     help = 'create/delete sample data'
@@ -16,6 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options['command']== 'create':
             try:
+                print('Appointment Types')
                 for appointment_type in appointment_types:
                     serializer = AppointmentTypeSerializer(None, data=appointment_type)
                     if serializer.is_valid():
@@ -24,6 +25,7 @@ class Command(BaseCommand):
                         print(serializer.errors)
                         raise CommandError('failure in creating sample data')
 
+                print('Pre Appointment Questions')
                 for pre_appointment_question in pre_appointment_questions:
                     serializer = PreAppointmentQuestionSerializer(None, data=pre_appointment_question)
                     if serializer.is_valid():
@@ -32,6 +34,7 @@ class Command(BaseCommand):
                         print(serializer.errors)
                         raise CommandError('failure in creating sample data')
 
+                print('Appointments')
                 for appointment in appointments:
                     serializer = AppointmentSerializer(None, data=appointment)
                     if serializer.is_valid():
@@ -40,14 +43,14 @@ class Command(BaseCommand):
                         print(serializer.errors)
                         raise CommandError('failure in creating sample data')
 
-                
-                for pre_appointment_response in pre_appointment_responses:
-                    serializer = PreAppointmentResponseSerializer(None, data=pre_appointment_response)
-                    if serializer.is_valid():
-                        pre_appointment_response = serializer.save()
-                    else:
-                        print(serializer.errors)
-                        raise CommandError('failure in creating sample data')
+                # print('Pre appointment Responses')                
+                # for pre_appointment_response in pre_appointment_responses:
+                #     serializer = PreAppointmentResponseSerializer(None, data=pre_appointment_response)
+                #     if serializer.is_valid():
+                #         pre_appointment_response = serializer.save()
+                #     else:
+                #         print(serializer.errors)
+                #         raise CommandError('failure in creating sample data')
 
             except Exception as e:
                 print(e)

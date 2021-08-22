@@ -23,14 +23,14 @@ def total_patients(request):
 @api_view(['GET', 'POST'])
 @permission_classes((AllowAny,))
 @csrf_exempt
-def patients(request):
+def patients(request, patient_id=''):
     if request.method == "GET":
         patient_view = None
         try:
-            patient_view = Patient.objects.get(id=id)
+            patient_view = Patient.objects.get(id=patient_id)
         except Patient.DoesNotExist:
             return Response(f'Patient does not exist', status=404)
-        serializer = PatientSerializer(patient_view,many=True)
+        serializer = PatientSerializer(patient_view)
         return Response(serializer.data)
     elif request.method == 'POST':
         add_patient = None

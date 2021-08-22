@@ -6,7 +6,7 @@ doctors = [
         'lastName' : 'Gaire',
         'license' : '23123123',
         'degree' : 'M.D.',
-        'specialty' : 'Primary Care Physician',
+        'types' : ['doctor_type1', 'doctor_type2', 'doctor_type3'],
         'gender' : 'M',
     },
     {
@@ -16,7 +16,7 @@ doctors = [
         'lastName' : 'Aryal',
         'license' : '235623123',
         'degree' : 'M.D.',
-        'specialty' : 'Psychiatrist',
+        'types' : ['doctor_type15', 'doctor_type12', 'doctor_type6'],
         'gender' : 'M',
     },
     {
@@ -26,7 +26,7 @@ doctors = [
         'lastName' : 'Pokhrel',
         'license' : '231245923',
         'degree' : 'M.D.',
-        'specialty' : 'Neuro Surgeon',
+        'types' : ['doctor_type4'],
         'gender' : 'F',
     },
 ]
