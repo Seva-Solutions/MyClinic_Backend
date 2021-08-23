@@ -29,9 +29,24 @@ class appointments_tests(TestCase):
             {"id": 2, "startTime":"2021-07-18T12:15:00Z","patient":"patient2","appointment_type":"appointment_type2","endTime":"2021-07-18T13:00:00Z"},
             {"id": 3, "startTime":"2021-07-19T12:30:00Z","patient":"patient3","appointment_type":"appointment_type3","endTime":"2021-07-19T12:45:00Z"}
         ]
+        self.assertEqual(response.status_code, 200)
         self.assertDictEqual(response.json()[0], expected_response[0])
         self.assertDictEqual(response.json()[1], expected_response[1])
         self.assertDictEqual(response.json()[2], expected_response[2])
+
+    def test_appointments_by_date_range(self):
+        start = '2021-07-17T12%3A15%3A00Z'
+        end = '2021-07-19T12%3A29%3A00Z'
+        doctor = 'doctor1'
+        response = self.client.get(f'http://localhost:8000/appointments/?start={start}&end={end}&doctor={doctor}')
+        expected_response = [
+            {"id": 1, "startTime":"2021-07-17T12:15:00Z","patient":"patient1","appointment_type":"appointment_type1","endTime":"2021-07-17T12:45:00Z"},
+            {"id": 2, "startTime":"2021-07-18T12:15:00Z","patient":"patient2","appointment_type":"appointment_type2","endTime":"2021-07-18T13:00:00Z"}
+        ]
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 2)
+        self.assertDictEqual(response.json()[0], expected_response[0])
+        self.assertDictEqual(response.json()[1], expected_response[1])
 
     def test_appointments_add_appointment(self):
         appointment = {
