@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class DoctorType(models.Model):
-    id = models.CharField(max_length=50,primary_key=True,default='')
+    # id = models.CharField(max_length=50,primary_key=True,default='')
     type = models.CharField(max_length=75,default='')
     
     class Meta:

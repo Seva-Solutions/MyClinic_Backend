@@ -60,28 +60,12 @@ doctor_types = [
         'type' : 'Colorectal Surgeon'
     },
     {
-        'id': 'doctor_type16',
-        'type' : 'Dentist'
-    },
-    {
-        'id': 'doctor_type17',
-        'type' : 'Dermatologist'
-    },
-    {
         'id': 'doctor_type18',
         'type' : 'Dietitian / Nutritionist'
     },
     {
-        'id': 'doctor_type19',
-        'type' : 'Ear, Nose &amp; Throat Doctor (ENT / Otolaryngologist)'
-    },
-    {
         'id': 'doctor_type20',
         'type' : 'Endocrinologist (incl Diabetes Specialists)'
-    },
-    {
-        'id': 'doctor_type21',
-        'type' : 'Eye Doctor'
     },
     {
         'id': 'doctor_type22',
@@ -128,10 +112,6 @@ doctor_types = [
         'type' : 'Neurosurgeon'
     },
     {
-        'id': 'doctor_type33',
-        'type' : 'OB-GYN (Obstetrician-Gynecologist)'
-    },
-    {
         'id': 'doctor_type34',
         'type' : 'Oncologist'
     },
@@ -150,10 +130,6 @@ doctor_types = [
     {
         'id': 'doctor_type38',
         'type' : 'Orthodontist'
-    },
-    {
-        'id': 'doctor_type39',
-        'type' : 'Orthopedic Surgeon (Orthopedist)'
     },
     {
         'id': 'doctor_type40',
@@ -184,16 +160,8 @@ doctor_types = [
         'type' : 'Podiatrist (Foot and Ankle Specialist)'
     },
     {
-        'id': 'doctor_type47',
-        'type' : 'Primary Care Physician (PCP)'
-    },
-    {
         'id': 'doctor_type48',
         'type' : 'Prosthodontist'
-    },
-    {
-        'id': 'doctor_type49',
-        'type' : 'Psychiatrist'
     },
     {
         'id': 'doctor_type50',

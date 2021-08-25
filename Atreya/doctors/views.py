@@ -9,7 +9,6 @@ from .models import *
 
 @api_view(['GET',])
 def total_doctors(request):
-
     doctor_view = None
     try:
         doctor_view = Doctor.objects.all().count()
@@ -25,14 +24,15 @@ def total_doctors(request):
 @api_view(['GET', 'POST'])
 @permission_classes((AllowAny,))
 @csrf_exempt
-def doctors(request):
+def doctors(request, doctor_id=''):
     if request.method == "GET":
         doctor_view = None
         try:
-            doctor_view = Doctor.objects.get(id=id)
+            doctor_view = Doctor.objects.get(id=doctor_id)
         except Doctor.DoesNotExist:
             return Response(f'Doctor does not exist', status=404)
-        serializer = DoctorSerializer(doctor_view,many=True)
+        serializer = DoctorSerializer(doctor_view)
+        return Response(serializer.data)
     elif request.method == 'POST':
         add_doctor = None
         serializer = DoctorSerializer(add_doctor, data=request.data)

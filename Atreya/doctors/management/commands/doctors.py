@@ -15,13 +15,12 @@ class Command(BaseCommand):
         if options['command']== 'create': 
             try:
                 for doctor_type in doctor_types:
-                    serializer = DoctorTypeSerializer(None, data=doctor_type)
-                    if serializer.is_valid():
-                        serializer.save()
-                    else:
-                        print(serializer.errors)
-                        raise CommandError('failure in creating sample data')
-
+                    try:
+                        dt = DoctorType(type=doctor_type['type'])
+                        dt.save()
+                    except Exception as e:
+                        self.stdout.write('Error adding service %s' % doctor_type['type'])
+                        print(e)
                 for doctor in doctors:
                     serializer = DoctorSerializer(None, data=doctor)
                     if serializer.is_valid():
@@ -35,7 +34,6 @@ class Command(BaseCommand):
                 raise CommandError('failure in creating sample data')
             self.stdout.write(self.style.SUCCESS('Successfully created data'))
         elif options["command"] ==  "delete":
-            
             try:
                 DoctorType.objects.all().delete()
                 Doctor.objects.all().delete()
