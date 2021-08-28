@@ -6,6 +6,8 @@ class Clinic(models.Model):
     id = models.CharField(max_length=50,primary_key=True,default='')
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100, default=None, blank=True)
+    email = models.CharField(max_length=100, default=None, blank=True)
     license = models.CharField(max_length=30)
     isLicenseVerified = models.BooleanField(default=False)
     password = models.CharField(max_length=30)

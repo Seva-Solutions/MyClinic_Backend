@@ -28,19 +28,19 @@ def total_clinics(request):
     return Response(clinic_view, status=status.HTTP_200_OK)
 
 # Create your views here.
-@api_view(['GET', 'POST'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+@permission_classes((AllowAny,))
 @csrf_exempt
-def clinics(request):
-
+def clinics(request, clinic_id=''):
     if request.method == "GET":
         clinic_view = None
         try:
-            clinic_view = Clinic.objects.get(id=id)
+            clinic_view = Clinic.objects.get(id=clinic_id)
         except Clinic.DoesNotExist:
             return Response(f'Clinic does not exist', status=404)
-        serializer = ClinicSerializer(clinic_view,many=True)
+        serializer = ClinicSerializer(clinic_view)
+        return Response(serializer.data)
+    # Both of these endpoints will not be used in first iteration
     elif request.method == 'POST':
         add_clinic = None
         serializer = ClinicSerializer(add_clinic, data=request.data)
@@ -48,7 +48,17 @@ def clinics(request):
             serializer.save()
             return Response("Clinic Sucessfully Added", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+    elif request.method == 'PATCH':
+        clinic_id = clinic_id if clinic_id else request.GET.get('clinic', request.data['id'])
+        try:
+            clinic = Clinic.objects.get(id=clinic_id)
+        except Clinic.DoesNotExist:
+            return Response(f'Clinic does not exist', status=404)
+        serializer = ClinicSerializer(clinic, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Clinic Sucessfully Updated", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST',])
 @permission_classes((AllowAny,))
