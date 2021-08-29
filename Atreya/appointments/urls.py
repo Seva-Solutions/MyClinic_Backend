@@ -5,6 +5,11 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     path('appointments/<str:appointment_id>',views.appointments),
     path('appointments/',views.appointments),
+    path('appointments/types/',views.appointment_types),
+    path('appointments/types/<str:appointment_type_id>',views.appointment_types),
+    # path('appointments/types/<str:clinic_id>/<str:doctor_id>',views.appointment_types),
+    # # path('appointments/types/<str:doctor_id>',views.appointment_types),
+    # path('appointments/types/<str:doctor_id>/<str:clinic_id>',views.appointment_types), 
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

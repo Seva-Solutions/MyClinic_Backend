@@ -64,6 +64,50 @@ def appointments(request, appointment_id=''):
         return Response(serializer.data)
 
 
+# Create your views here.
+@api_view(['GET', 'POST', 'PATCH'])
+def appointment_types(request, appointment_type_id=''):
+    add_appointment_type = None
+    appointment_type_id = request.GET.get('appointment_type', appointment_type_id)
+    if request.method == 'POST':
+        serializer = AppointmentTypeSerializer(add_appointment_type, data=request.data)
+        if serializer.is_valid():
+            appointment_type = serializer.save()
+            response = {'id' : appointment_type.id}
+            return Response(response, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'PATCH':
+        appointment_type_id = appointment_type_id if appointment_type_id else request.data['id']
+        try:
+            add_appointment_type = AppointmentType.objects.get(id=appointment_type_id)
+        except AppointmentType.DoesNotExist:
+            return Response(f'Appointment Type does not exist', status=404)
+        serializer = AppointmentTypeSerializer(add_appointment_type, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Appointment Type Sucessfully Updated", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET":
+        appointment_type_data = None
+        clinic_id = request.GET.get('clinic', '')
+        doctor_id = request.GET.get('doctor', '')
 
+        if not clinic_id and not appointment_type_id and not doctor_id:
+            return Response(f'Appointment type id, clinic id or doctor id must be specified', status=404)
+        elif (clinic_id or doctor_id) and appointment_type_id:
+            return Response(f'Please specify either appointment type id or one of; clinic id, doctor id. Not both', status=404)
+        appointment_type_data = AppointmentType.objects
 
-
+        if clinic_id and doctor_id:
+            appointment_type_data = appointment_type_data.filter(clinic__id=clinic_id, doctor__id=doctor_id)
+        elif clinic_id:
+            appointment_type_data = appointment_type_data.filter(clinic__id=clinic_id)
+        elif doctor_id:
+            appointment_type_data = appointment_type_data.filter(doctor__id=doctor_id)
+        else:
+            try:
+                appointment_type_data = [ AppointmentType.objects.get(id=appointment_type_id) ]
+            except Appointment.DoesNotExist:
+                return Response(f'Appointment does not exist', status=404)
+        serializer = AppointmentTypeSerializer(appointment_type_data,many=True)
+        return Response(serializer.data)
