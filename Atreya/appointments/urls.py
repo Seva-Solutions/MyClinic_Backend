@@ -7,6 +7,8 @@ urlpatterns = [
     path('appointments/',views.appointments),
     path('appointments/types/',views.appointment_types),
     path('appointments/types/<str:appointment_type_id>',views.appointment_types),
+    path('appointments/questions/',views.pre_appointment_questions),
+    path('appointments/questions/<str:pre_appointment_question_id>',views.pre_appointment_questions),
     # path('appointments/types/<str:clinic_id>/<str:doctor_id>',views.appointment_types),
     # # path('appointments/types/<str:doctor_id>',views.appointment_types),
     # path('appointments/types/<str:doctor_id>/<str:clinic_id>',views.appointment_types), 

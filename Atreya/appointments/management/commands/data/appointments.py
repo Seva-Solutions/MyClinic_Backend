@@ -13,11 +13,11 @@ appointments = [
         'appointment_type' : 'appointment_type2',
         'pre_appointment_responses': [
             {
-                'question': 'pre_appointment_question1',
+                'question': 'What is the issue?',
                 'response': 'Nothing, just a little fat',
             },
             {
-                'question': 'pre_appointment_question2',
+                'question': 'When did you start noticing the symptoms?',
                 'response': 'My whole life',
             }
         ]
@@ -29,7 +29,7 @@ appointments = [
         'appointment_type' : 'appointment_type3',
         'pre_appointment_responses': [
             {
-                'question': 'pre_appointment_question3',
+                'question': 'Have you gotten a flu shot before, and if so when was your last flu shot?',
                 'response': 'No',
             }
         ]
@@ -47,11 +47,11 @@ appointments = [
         'appointment_type' : 'appointment_type5',
         'pre_appointment_responses' : [
             {
-                'question': 'pre_appointment_question4',
+                'question': 'What is the issue?',
                 'response': 'My whole life'
             },
             {
-                'question': 'pre_appointment_question5',
+                'question': 'When did you start noticing the symptoms?',
                 'response': 'Been noticing them'
             }
         ]

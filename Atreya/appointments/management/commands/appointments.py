@@ -36,6 +36,14 @@ class Command(BaseCommand):
 
                 print('Appointments')
                 for appointment in appointments:
+                    for response in appointment.get('pre_appointment_responses',[]):
+                        # import pdb; pdb.set_trace()
+                        try:
+                            response['question'] = PreAppointmentQuestion.objects.get(appointment_type=appointment['appointment_type'],question=response['question']).id
+                        except PreAppointmentQuestion.DoesNotExist:
+                            print('\n\n\nHERE\n\n\n')
+                            # import pdb; pdb.set_trace()
+                            print(response)
                     serializer = AppointmentSerializer(None, data=appointment)
                     if serializer.is_valid():
                         appointment = serializer.save()

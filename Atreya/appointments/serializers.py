@@ -61,6 +61,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         endTime = instance.startTime + datetime.timedelta(minutes=instance.appointment_type.length)
-        representation = super(AppointmentSerializer, self).to_representation(instance)
+        representation = super(AppointmentSerializer, self).to_representation(instance) 
         representation['endTime'] = endTime
         return representation

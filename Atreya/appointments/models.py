@@ -18,7 +18,7 @@ class AppointmentType(models.Model):
            return self.title
 
 class PreAppointmentQuestion(models.Model):
-    id = models.CharField(max_length=50,primary_key=True,default='')
+    # id = models.CharField(max_length=50,primary_key=True,default='')
     question = models.CharField(max_length=255,default='')
     appointment_type = models.ForeignKey(AppointmentType, on_delete=models.CASCADE,default=None)
     
@@ -26,7 +26,7 @@ class PreAppointmentQuestion(models.Model):
         ordering = ['id']
 
     def __str__(self):
-           return self.question
+        return self.question
     
 class Appointment(models.Model): 
     # id = models.CharField(max_length=50,primary_key=True,default='')
@@ -50,4 +50,4 @@ class PreAppointmentResponse(models.Model):
         ordering = ['id']
 
     def __str__(self):
-           return self.response
+        return self.response

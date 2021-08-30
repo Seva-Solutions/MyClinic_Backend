@@ -111,3 +111,52 @@ def appointment_types(request, appointment_type_id=''):
                 return Response(f'Appointment does not exist', status=404)
         serializer = AppointmentTypeSerializer(appointment_type_data,many=True)
         return Response(serializer.data)
+
+
+# Create your views here.
+@api_view(['GET', 'POST', 'PATCH'])
+def pre_appointment_questions(request, pre_appointment_question_id=''):
+    add_pre_appointment_question = None
+    pre_appointment_question_id = request.GET.get('pre_appointment_question', pre_appointment_question_id)
+    if request.method == 'POST':
+        serializer = PreAppointmentQuestionSerializer(add_pre_appointment_question, data=request.data)
+        if serializer.is_valid():
+            pre_appointment_question = serializer.save()
+            response = {'id' : pre_appointment_question.id}
+            return Response(response, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'PATCH':
+        pre_appointment_question_id = pre_appointment_question_id if pre_appointment_question_id else request.data['id']
+        try:
+            add_pre_appointment_question = PreAppointmentQuestion.objects.get(id=pre_appointment_question_id)
+        except PreAppointmentQuestion.DoesNotExist:
+            return Response(f'Appointment Type does not exist', status=404)
+        serializer = PreAppointmentQuestionSerializer(add_pre_appointment_question, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Appointment Type Sucessfully Updated", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET":
+        pre_appointment_question_data = None
+        clinic_id = request.GET.get('clinic', '')
+        doctor_id = request.GET.get('doctor', '')
+
+        if not clinic_id and not pre_appointment_question_id and not doctor_id:
+            return Response(f'Appointment type id, clinic id or doctor id must be specified', status=404)
+        elif (clinic_id or doctor_id) and pre_appointment_question_id:
+            return Response(f'Please specify either appointment type id or one of; clinic id, doctor id. Not both', status=404)
+        pre_appointment_question_data = PreAppointmentQuestion.objects
+
+        if clinic_id and doctor_id:
+            pre_appointment_question_data = pre_appointment_question_data.filter(clinic__id=clinic_id, doctor__id=doctor_id)
+        elif clinic_id:
+            pre_appointment_question_data = pre_appointment_question_data.filter(clinic__id=clinic_id)
+        elif doctor_id:
+            pre_appointment_question_data = pre_appointment_question_data.filter(doctor__id=doctor_id)
+        else:
+            try:
+                pre_appointment_question_data = [ PreAppointmentQuestion.objects.get(id=pre_appointment_question_id) ]
+            except Appointment.DoesNotExist:
+                return Response(f'Appointment does not exist', status=404)
+        serializer = PreAppointmentQuestionSerializer(pre_appointment_question_data,many=True)
+        return Response(serializer.data)
